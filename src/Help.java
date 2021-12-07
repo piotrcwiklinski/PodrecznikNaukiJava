@@ -1,49 +1,42 @@
+import java.io.*;
+
 public class Help {
 
-    void helpOn(int what) {
-        switch (what) {
-            case '1':
-                System.out.println("Instrukcja warunkowa if:\n");
-                System.out.println("if(warunek) instrukcja;");
-                System.out.println("else instrukcja;");
-                break;
-            case '2':
-                System.out.println("Instrukcja wyboru switch:\n");
-                System.out.println("switch(wyrażenie) {");
-                System.out.println("  case 'stała':");
-                System.out.println("    sekwencja instrukcji");
-                System.out.println("    break;");
-                System.out.println("  // ...");
-                System.out.println("}");
-                break;
-            case '3':
-                System.out.println("Pętla for:\n");
-                System.out.println("for(inicjalizacja; warunek; iteracja)");
-                System.out.println("  instrukcja;");
-                break;
-            case '4':
-                System.out.println("Pętla while:\n");
-                System.out.println("while(warunek) instrukcja;");
-                break;
-            case '5':
-                System.out.println("Pętla do-while:\n");
-                System.out.println("do {");
-                System.out.println("  instrukcja;");
-                System.out.println("} while (warunek);");
-                break;
-            case '6':
-                System.out.println("Instrukcja break:\n");
-                System.out.println("break; lub break etykieta;");
-                break;
-            case '7':
-                System.out.println("Instrukcja continue:\n");
-                System.out.println("continue; lub continue etykieta;");
-                break;
-        }
-        System.out.println();
+    String helpfile;
+
+    Help(String fname) {
+        helpfile = fname;
     }
 
-    void showMenu() {
+    boolean helpOn(String what) {
+        int ch;
+        String topic, info;
+
+        try(BufferedReader helpRdr = new BufferedReader(new FileReader(helpfile)))
+        {
+            do {
+                ch = helpRdr.read();
+
+                if(ch == '#') {
+                    topic = helpRdr.readLine();
+                    if(what.compareTo(topic) == 0) {
+                        do {
+                            info = helpRdr.readLine();
+                            if(info != null) System.out.println(info);
+                        } while((info != null) && (info.compareTo("") != 0));
+                        return true;
+                    }
+                }
+            } while(ch != -1);
+        }
+        catch(IOException exc) {
+            System.out.println("Błąd podczas dostępu do pliku pomocy.");
+            return false;
+        }
+        return false;
+    }
+
+    static void showMenu() {
         System.out.println("Informacje na temat składni instrukcji:");
         System.out.println("  1. if");
         System.out.println("  2. switch");
@@ -52,11 +45,19 @@ public class Help {
         System.out.println("  5. do-while");
         System.out.println("  6. break");
         System.out.println("  7. continue\n");
-        System.out.println("Wybierz numer instrukcji (lub \"q\", aby zakończyć):");
+        System.out.println("Wpisz nazwę instrukcji (lub \"stop\", aby zakończyć):");
     }
 
-    boolean isValid(int ch) {
-        if (ch < '1' | ch > '7' & ch != 'q') return false;
-        else return true;
+    String getSelection() {
+        String topic = "";
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            topic = br.readLine();
+        }
+        catch(IOException exc) {
+            System.out.println("Błąd podczas odczytu z konsoli.");
+        }
+        return topic;
     }
 }

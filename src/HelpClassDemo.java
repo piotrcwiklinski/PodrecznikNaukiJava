@@ -1,25 +1,22 @@
+
 public class HelpClassDemo {
-    public static void main(String[] args)
-            throws java.io.IOException {
-        char choice, ignore;
-        Help hlpobj = new Help();
+    public static void main(String[] args) {
 
-        for (; ; ) {
+        String topic;
+        Help hlpobj = new Help("C:\\Users\\cwikl\\IdeaProjects\\PodrecznikNaukiJava\\src\\helpfile.TXT");
+
+
             do {
-                hlpobj.showMenu();
+                Help.showMenu();
+                topic = hlpobj.getSelection();
 
-                choice = (char) System.in.read();
+                if(!hlpobj.helpOn(topic)){
+                    if(topic.compareTo("stop") != 0)
+                        System.out.println("Temat nie został odnaleziony.\n");
 
-                do {
-                    ignore = (char) System.in.read();
-                } while (ignore != '\n');
-            } while (!hlpobj.isValid(choice));
+                }
 
-            if (choice == 'q') break;
+            } while (topic.compareTo("stop") != 0);
 
-            System.out.println("\n");
-
-            hlpobj.helpOn(choice);
         }
     }
-}

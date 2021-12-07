@@ -1,0 +1,28 @@
+#if
+if(warunek) instrukcja;
+else instrukcja;
+
+#switch
+switch(wyrażenie) {
+  case 'stała':
+    sekwencja instrukcji
+    break;
+    // ...
+  }
+
+#for
+for(inicjalizacja; warunek; iteracja) instrukcja;
+
+#while
+while(warunek) instrukcja;
+
+#do-while
+do {
+  instrukcja;
+} while (warunek);
+
+#break
+break; lub break etykieta;
+
+#continue
+continue; lub continue etykieta;
